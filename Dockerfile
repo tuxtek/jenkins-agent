@@ -1,21 +1,12 @@
 FROM jenkins/slave
 USER root
-RUN apt-get update && \
-    apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg2 \
-    software-properties-common && \
-    apt-get -y upgrade && \
-    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
-    add-apt-repository \
-        "deb [arch=amd64] https://download.docker.com/linux/debian \
-        $(lsb_release -cs) \
-        stable" && \
-    apt-get update && \
-    apt-get -y install docker-ce && \
-    curl -L https://github.com/docker/compose/releases/download/VERSION_NUM/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+RUN curl -L "https://download.docker.com/linux/static/stable/x86_64/docker-18.09.1.tgz" -o ./docker.tgz && \
+    tar xzvf ./docker.tgz && \
+    mv docker/docker /usr/bin/docker && \
+    rm -rf docker.tgz docker && \
+    curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose && \
-    rm -rf /var/lib/apt/lists/*
-
+    chmod +x /usr/bin/docker && \
+    groupadd -g 999 docker && \
+    usermod -aG docker jenkins && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
