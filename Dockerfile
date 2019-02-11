@@ -10,3 +10,4 @@ RUN curl -L "https://download.docker.com/linux/static/stable/x86_64/docker-18.09
     groupadd -g 999 docker && \
     usermod -aG docker jenkins && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
