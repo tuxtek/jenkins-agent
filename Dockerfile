@@ -1,5 +1,7 @@
 FROM jenkins/slave
 USER root
+ENV DOCKER_GID=997
+RUN groupadd -g ${DOCKER_GID} docker
 RUN curl -L "https://download.docker.com/linux/static/stable/x86_64/docker-18.09.1.tgz" -o ./docker.tgz && \
     tar xzvf ./docker.tgz && \
     mv docker/docker /usr/bin/docker && \
